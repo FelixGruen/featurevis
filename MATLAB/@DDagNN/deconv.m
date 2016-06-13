@@ -1,4 +1,17 @@
 function deconv(net, dzdy, outputIndex, outputLayer, reluMethod, convMethod)
+
+% Copyright (C) 2016 Felix Grün.
+% All rights reserved.
+%
+% Parts of the code taken and modified from the MatConvNet library made available
+% under the terms of the BSD license (see the MATCONVNET_LICENCE file).
+% Copyright (C) 2015 Karel Lenc and Andrea Vedaldi.
+% All rights reserved.
+%
+% This file is part of the FeatureVis library and is made available under
+% the terms of the BSD license (see the LICENCE file).
+
+
     % set output derivatives
     net.vars(outputIndex).der = dzdy ;
     net.numPendingVarRefs = zeros(1, numel(net.vars)) ;

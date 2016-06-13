@@ -1,5 +1,17 @@
 function eval_occlusion(obj, inputs, occlusionVariable, occlusionFilter, range_h, range_w)
 
+% Copyright (C) 2016 Felix Grün.
+% All rights reserved.
+%
+% Parts of the code taken and modified from the MatConvNet library made available
+% under the terms of the BSD license (see the MATCONVNET_LICENCE file).
+% Copyright (C) 2015 Karel Lenc and Andrea Vedaldi.
+% All rights reserved.
+%
+% This file is part of the FeatureVis library and is made available under
+% the terms of the BSD license (see the LICENCE file).
+
+
 if ~iscell(inputs), error('INPUTS is not a cell array.') ; end
 
 % -------------------------------------------------------------------------
@@ -20,7 +32,7 @@ for l = obj.executionOrder
   time = tic ;
   obj.layers(l).block.forwardAdvanced(obj.layers(l)) ;
   obj.layers(l).forwardTime = toc(time) ;
-  
+
   if isequal(obj.vars(occlusionVariable).name, obj.layers(l).outputs)
     obj.vars(occlusionVariable).value(range_h, range_w, occlusionFilter) = 0;
   end

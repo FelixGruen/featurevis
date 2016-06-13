@@ -103,5 +103,3 @@ for i = 1:numel(rfs)
   end
 end
 end
-
-

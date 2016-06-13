@@ -38,7 +38,13 @@ function heatmap = graphical_deconvolution(net, im, im_, varargin)
 %   Computations are run on the GPU if IM_ is a gpuArray. Otherwise they
 %   are run on the CPU.
 %
+
+% Copyright (C) 2016 Felix Grün.
+% All rights reserved.
 %
+% This file is part of the FeatureVis library and is made available under
+% the terms of the BSD license (see the LICENCE file).
+
 
     if isa(net, 'DDagNN') || isa(net, 'dagnn.DagNN')
         heatmap = dagnn_graphical_deconvolution(net, im, im_, varargin{:});

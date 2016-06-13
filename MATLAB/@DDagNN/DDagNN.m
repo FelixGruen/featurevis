@@ -1,5 +1,16 @@
 classdef DDagNN < dagnn.DagNN
 
+% Copyright (C) 2016 Felix Grün.
+% All rights reserved.
+%
+% Parts of the code taken and modified from the MatConvNet library made available
+% under the terms of the BSD license (see the MATCONVNET_LICENCE file).
+% Copyright (C) 2015-2016 Karel Lenc and Andrea Vedaldi.
+% All rights reserved.
+%
+% This file is part of the FeatureVis library and is made available under
+% the terms of the BSD license (see the LICENCE file).
+
   properties (Transient, Access = private, Hidden = true)
     modifed = false
     varNames = struct()
@@ -117,8 +128,8 @@ classdef DDagNN < dagnn.DagNN
         p = addParam@dagnn.DagNN(obj, name);
     end
   end
-    
-    
+
+
     %{
     properties (Transient, Access = {?dagnn.DagNN, ?dagnn.Layer}, Hidden = true)
         numPendingVarRefs
@@ -134,7 +145,7 @@ classdef DDagNN < dagnn.DagNN
         layerNames = struct()
         layerIndexes = {}
     end
-  
+
     methods
 
         % Manage the DagNN
@@ -144,7 +155,7 @@ classdef DDagNN < dagnn.DagNN
 
         % Process data with the DagNN
         initParams(obj)
-        
+
         function eval(obj, inputs, derOutputs)
             disp(obj.vars(1).name);
             if ~exist('derOutputs', 'var')
