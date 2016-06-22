@@ -4,7 +4,7 @@
 
 ## Functions
 
-##### graphical_deconvolution(net, im, im_)
+#### graphical_deconvolution(net, im, im_)
 
 Deconvolves activations back to the input space to generate a heatmap of activations.
 
@@ -39,7 +39,7 @@ are run on the CPU.
 
 Calls simplenn_graphical_deconvolution or dagnn_graphical_deconvolution internally.
 
-##### simplenn_graphical_deconvolution(net, im, im_)
+#### simplenn_graphical_deconvolution(net, im, im_)
 
 Ddeconvolves activations back to the input space to generate a heatmap of activations, and displays it to the user.
 
@@ -67,7 +67,7 @@ Computations are run on the GPU if im_ is a gpuArray. Otherwise they are run on 
 
 Calls simplenn_deconvolution internally.
 
-##### simplenn_deconvolution(net, im_)
+#### simplenn_deconvolution(net, im_)
 
 Ddeconvolves activations back to the input space to generate a heatmap of activations, and returns the heatmap.
 
@@ -92,7 +92,7 @@ An Int32 specifying the filter for which activations should be deconvolved back 
 
 Computations are run on the GPU if im_ is a gpuArray. Otherwise they are run on the CPU.
 
-##### dagnn_graphical_deconvolution(net, im, im_)
+#### dagnn_graphical_deconvolution(net, im, im_)
 
 Ddeconvolves activations back to the input space to generate a heatmap of activations, and displays it to the user.
 
@@ -126,7 +126,7 @@ Computations are run on the GPU if im_ is a gpuArray. Otherwise they are run on 
 
 Calls dagnn_deconvolution internally.
 
-##### dagnn_deconvolution(net, im, im_, inputName, outputName)
+#### dagnn_deconvolution(net, im, im_, inputName, outputName)
 
 Ddeconvolves activations back to the input space to generate a heatmap of activations, and displays it to the user.
 
