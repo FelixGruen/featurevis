@@ -12,7 +12,7 @@ function heatmap = dagnn_occlusion(net, im_, inputName, outputName, varargin)
 %   STRIDE. The stride width with which the occluded area will be moved
 %   accross the occluded filter.
 %
-%   DAGNN_OCCLUSION(...,'OPT',VALUE,...,SIZE, STRIDE) takes the following options:
+%   DAGNN_OCCLUSION(...,'OPT',VALUE,..., {SIZE, STRIDE}) takes the following options:
 %
 %   'MeasureLayer':: Last layer
 %       An Int32 specifying the layer at which the changes in activations
@@ -24,7 +24,7 @@ function heatmap = dagnn_occlusion(net, im_, inputName, outputName, varargin)
 %       should be measured. By default the strongest activated filter is
 %       used.
 %
-%   'BoxColor':: Negativ of the average image color
+%   'BoxColor':: Random pixel values
 %       A 1x3 single Array specifying the color to be used for the occlusion box.
 %       The three values correspond to the three color channels.
 %
@@ -74,9 +74,8 @@ function heatmap = dagnn_occlusion(net, im_, inputName, outputName, varargin)
     measureLayer = 0;
     measureFilter = 0;
 
-    % The natural image mean used for normalization should be roughly in the middle of the color spectrum.
-    % Taking the negative of the mean value per color channel should therefore give the negativ of the average image color.
-    boxColor = -[mean(mean(im_(:,:,1))) mean(mean(im_(:,:,2))) mean(mean(im_(:,:,3)))];
+    % a boxColor value of 0 means random values
+    boxColor = 0;
 
     % parse optional parameters
     for i = 1:2:length(varargin)
@@ -244,6 +243,8 @@ function heatmap = compute_heat(net, inputName, im_, score, measureVariable, mea
         heatmap = zeros(size(im_,1), size(im_,2), 'double') ;
     end
 
+    randomColor = length(boxColor) ~= 3;
+
     % calculate the start and end points depending on the occlusion box
     % size and stride rate. Start and end points will either be the first
     % and last pixel of the image or outside the image area
@@ -268,12 +269,17 @@ function heatmap = compute_heat(net, inputName, im_, score, measureVariable, mea
             % are not inside the image area
             range_h = max(h,1):min(h+strideH-1,size(im_,1));
 
-            % copy image and overlay the occlusion box over the copied
-            % image
+            % copy image
             im2 = im_ ;
-            im2(range_h, range_w, 1) = boxColor(1) ;
-            im2(range_h, range_w, 2) = boxColor(2) ;
-            im2(range_h, range_w, 3) = boxColor(3) ;
+
+            %  and overlay the occlusion box over the copied image
+            if randomColor
+                im2(range_h, range_w, :) = rand(length(range_h), length(range_w), size(im2,3), 'single') * 256 - 128;
+            else
+                im2(range_h, range_w, 1) = boxColor(1);
+                im2(range_h, range_w, 2) = boxColor(2);
+                im2(range_h, range_w, 3) = boxColor(3);
+            end
 
             % calculate activations (disable dropout)
             net.eval({inputName, im2});

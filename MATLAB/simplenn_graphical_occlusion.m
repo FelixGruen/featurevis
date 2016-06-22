@@ -11,7 +11,7 @@ function heatmap = simplenn_graphical_occlusion(net, im, im_, varargin)
 %   STRIDE. The stride width with which the occluded area will be moved
 %   accross the occluded filter.
 %
-%   SIMPLENN_GRAPHICAL_OCCLUSION(...,'OPT',VALUE,...,SIZE, STRIDE) takes the following options:
+%   SIMPLENN_GRAPHICAL_OCCLUSION(...,'OPT',VALUE,..., {SIZE, STRIDE}) takes the following options:
 %
 %   'MeasureLayer':: Last layer
 %       An Int32 specifying the layer at which the changes in activations
@@ -23,7 +23,7 @@ function heatmap = simplenn_graphical_occlusion(net, im, im_, varargin)
 %       should be measured. By default the strongest activated filter is
 %       used.
 %
-%   'BoxColor':: Negativ of the average image color
+%   'BoxColor'::  Random pixel values
 %       A 1x3 single Array specifying the color to be used for the occlusion box.
 %       The three values correspond to the three color channels.
 %
@@ -54,9 +54,8 @@ function heatmap = simplenn_graphical_occlusion(net, im, im_, varargin)
     % set standard values for optional parameters
     parameters = cell(0);
 
-    % The natural image mean used for normalization should be roughly in the middle of the color spectrum.
-    % Taking the negative of the mean value per color channel should therefore give the negativ of the average image color.
-    boxColor = -[mean(mean(im_(:,:,1))) mean(mean(im_(:,:,2))) mean(mean(im_(:,:,3)))];
+    % a boxColor value of 0 means random values
+    boxColor = 0;
 
     % parse optional parameters
     for i = 1:2:length(varargin)
@@ -120,10 +119,18 @@ function heatmap = simplenn_graphical_occlusion(net, im, im_, varargin)
         size_h = varargin{index}{3};
     end
 
-    im2 = im_ ;
-    im2(1:size_h, 1:size_w, 1) = boxColor(1) ;
-    im2(1:size_h, 1:size_w, 2) = boxColor(2) ;
-    im2(1:size_h, 1:size_w, 3) = boxColor(3) ;
+    im2 = im_;
+    randomColor = length(boxColor) ~= 3;
+
+    if randomColor
+        im2(1:size_h, 1:size_w, :) = rand(size_h, size_w, size(im2,3), 'single') * 256 - 128;
+    else
+        im2(1:size_h, 1:size_w, 1) = boxColor(1);
+        im2(1:size_h, 1:size_w, 2) = boxColor(2);
+        im2(1:size_h, 1:size_w, 3) = boxColor(3);
+    end
+
+    im2 = (im2 - min(im2(:))) / (max(im2(:)) - min(im2(:)));
 
     fig = figure('Name', 'Top left area occluded'); clf; imagesc(im2); truesize(fig);
 

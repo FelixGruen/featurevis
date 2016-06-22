@@ -1,6 +1,6 @@
-function im_ = simplenn_reconstruction(net, im_, target, varargin)
-%SIMPLENN_RECONSTRUCTION. Generating a reconstruction of the given target.
-%   HEATMAP = SIMPLENN_RECONSTRUCTION(NET, IM_, TARGET)
+function im_ = dagnn_reconstruction(net, im_, target, varargin)
+%DAGNN_RECONSTRUCTION. Generating a reconstruction of the given target.
+%   HEATMAP = DAGNN_RECONSTRUCTION(NET, IM_, TARGET)
 %   generates an input image which leads to activations equal to TARGET in the
 %   last layer of the network. The reconstruction can be controlled by optional
 %   regularizers.
@@ -11,7 +11,15 @@ function im_ = simplenn_reconstruction(net, im_, target, varargin)
 %       the values of the activation maps of the last layer. The reconstructed
 %       image will result in activations which are equal or close to the target.
 %
-%   SIMPLENN_RECONSTRUCTION(...,'OPT',VALUE,...) takes the following options:
+%   DAGNN_RECONSTRUCTION(...,'OPT',VALUE,...) takes the following options:
+%
+%   'InputName':: Empty
+%      Sets the input variable. Only required for dag networks with more than
+%      one input variable.
+%
+%   'OutputName':: Empty
+%      Sets the output variable. Only required for dag networks with more than
+%      one output variable.
 %
 %   'Runs':: 100
 %       An integer specifying the number of runs. One forward and the subsequent
@@ -48,6 +56,11 @@ function im_ = simplenn_reconstruction(net, im_, target, varargin)
     % --- process input ---
 
     % set standard values for optional parameters
+    inputName = '';
+    inputVariable = -1;
+    outputName = '';
+    outputVariable = -1;
+
     p = 6;
     runs = 100;
     pNormFactor = 1 / (size(im_,1) * size(im_,2) * 128 ^ p);
@@ -63,6 +76,20 @@ function im_ = simplenn_reconstruction(net, im_, target, varargin)
         end
 
         switch lower(varargin{i})
+            case 'inputname'
+                if ~ischar(varargin{i+1}) error('The value for inputName must be a char'); end
+                inputName = varargin{i+1};
+                inputVariable = net.getVarIndex(inputName);
+                if isnan(inputVariable)
+                    error('There is no variable with name %s', inputName);
+                end
+            case 'outputname'
+                if ~ischar(varargin{i+1}) error('The value for outputName must be a char'); end
+                outputName = varargin{i+1};
+                outputVariable = net.getVarIndex(outputName);
+                if isnan(outputVariable)
+                    error('There is no variable with name %s', outputName);
+                end
             case 'runs'
                 if ~isnumeric(varargin{i+1}) error('The value for runs must be an integer'); end
                 runs = cast(varargin{i+1}, 'int32');
@@ -88,14 +115,60 @@ function im_ = simplenn_reconstruction(net, im_, target, varargin)
 
     % --- preparations ---
 
+    % If output variable has not been set, set if to the first output of the
+    % layer where non of the outputs is an input to another layer
+    if outputVariable < 0
+        for i = length(net.layers):-1:1
+            out = net.layers(i).outputIndexes;
+            onlyOutputs = true;
+            for j = 1:length(out)
+                if net.vars(out(j)).fanout ~= 0
+                    onlyOutputs = false;
+                    break;
+                end
+            end
+            if onlyOutputs
+                outputVariable = out(1);
+                outputName =  net.vars(outputVariable).name;
+                break;
+            end
+        end
+    end
+
+    % If input variable has not been set, set it to the first input of the layer
+    % where non of the inputs is an output of another layer
+    if inputVariable < 0
+        for i = 1:length(net.layers)
+            in = net.layers(i).inputIndexes;
+            onlyInputs = true;
+            for j = 1:length(in)
+                if net.vars(in(j)).fanin ~= 0
+                    onlyInputs = false;
+                    break;
+                end
+            end
+            if onlyInputs
+                inputVariable =  in(1);
+                inputName = net.vars(inputVariable).name;
+                break;
+            end
+        end
+    end
+
     gpuMode = isa(im_, 'gpuArray');
 
     % move everything to the GPU
     if gpuMode
-        net = vl_simplenn_move(net, 'gpu');
+        net.move('gpu');
     else
-        net = vl_simplenn_move(net, 'cpu');
+        net.move('cpu');
     end
+
+    % Disable dropout
+    mode = net.mode;
+    net.mode = 'test';
+
+    fprintf('Input variable %d (%s). Output variable %d (%s)\n', inputVariable, inputName, outputVariable, outputName);
 
     % Display user information
     fprintf('Generating input image.\n');
@@ -115,18 +188,18 @@ function im_ = simplenn_reconstruction(net, im_, target, varargin)
 
     for i = 1:runs
 
-        % calculate activations (disable dropout)
-        res = vl_simplenn(net, im_, [], [], 'Mode', 'test');
+        % calculate activations
+        net.eval({inputName, im_});
 
-        scores = res(end).x;
+        scores = net.vars(outputVariable).value;
 
         % compute the derivatives of the activations
         dzdy = 2 * (scores - target);
 
-        res = vl_simplenn(net, im_, dzdy, res, 'Mode', 'test', 'SkipForward', true);
+        net.eval({inputName, im_}, {outputName, dzdy});
 
         % Add all the derivatives together
-        gradients(:,:,:) = targetFactor * res(1).dzdx;
+        gradients(:,:,:) = targetFactor * net.vars(inputVariable).der;
 
         if pNormFactor ~= 0
             gradients(:,:,:) = gradients(:,:,:) + pNormFactor * pNormGradient(p, im_);
@@ -150,6 +223,8 @@ function im_ = simplenn_reconstruction(net, im_, target, varargin)
         end
 
     end
+
+    net.mode = mode;
 end
 
 function grad = pNormGradient(p, im_)

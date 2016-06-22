@@ -17,11 +17,17 @@ function heatmap = graphical_deconvolution(net, im, im_, varargin)
 %      Sets the output variable. Only required for dag networks with more than
 %      one output variable.
 %
-%   'Method':: 'Guided Backpropagation'
-%      Sets the method used to deconvolute activations. The available
-%      methods are 'Backpropagation', 'Deconvnet', and 'Guided
-%      Backpropagation'. The default method is 'Guided Backpropagation'
-%      since this method generally gives the best results.
+%   'ReLUPass':: 'Guided Backpropagation'
+%       Sets the method used to deconvolute activations through the ReLU layers.
+%       The available methods are 'Backpropagation', 'Deconvnet', and 'Guided
+%       Backpropagation'. The default method is 'Guided Backpropagation'
+%       since this method usually gives the best results.
+%
+%   'ConvolutionPass':: 'Standard'
+%       Sets the method used to deconvolute activations through the convolution
+%       layers. The available methods are 'Relevance Propagation', and
+%       'Standard'. The default method is 'Standard', since this
+%       method usually gives the best results.
 %
 %   'MeasureLayer':: Last layer
 %       An Int32 specifying the layer from which activations should be

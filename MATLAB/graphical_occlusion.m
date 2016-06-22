@@ -1,6 +1,6 @@
 function heatmap = graphical_occlusion(net, im, im_, varargin)
 %GRAPHICAL_OCCLUSION. Generating a heatmap of feature importance.
-%   HEATMAP = GRAPHICAL_OCCLUSION(NET, IM, IM_, SIZE, STRIDE)
+%   HEATMAP = GRAPHICAL_OCCLUSION(NET, IM, IM_, {SIZE, STRIDE})
 %   generates a heatmap showing the importance of different areas of the input image,
 %   and displays it to the user.
 %   NET. The CNN to visualize.
@@ -11,7 +11,7 @@ function heatmap = graphical_occlusion(net, im, im_, varargin)
 %   STRIDE. The stride width with which the occluded area will be moved
 %   accross the occluded filter.
 %
-%   GRAPHICAL_OCCLUSION(...,'OPT',VALUE,...,SIZE, STRIDE) takes the following options:
+%   GRAPHICAL_OCCLUSION(...,'OPT',VALUE,..., {SIZE, STRIDE}) takes the following options:
 %
 %   'MeasureLayer':: Last layer
 %       An Int32 specifying the layer at which the changes in activations
@@ -23,7 +23,7 @@ function heatmap = graphical_occlusion(net, im, im_, varargin)
 %       should be measured. By default the strongest activated filter is
 %       used.
 %
-%   'BoxColor':: Negativ of the average image color
+%   'BoxColor'::  Random pixel values
 %       A 1x3 single Array specifying the color to be used for the occlusion box.
 %       The three values correspond to the three color channels.
 %
@@ -35,11 +35,11 @@ function heatmap = graphical_occlusion(net, im, im_, varargin)
 %   The two values for size and stride may be replaced by four values where
 %   the first two values specify the size and stride along the width of the
 %   input (horizontally) and the last two values specify the size and
-%   stride along the height of the input (vertically). In fact any multiple
-%   of four values may be used to run more than one test and average the
-%   results, e.g. eight values might specify one test with a larger
-%   occluded area and stride rate first and a second test with a smaller
-%   occluded area and stride rate last.
+%   stride along the height of the input (vertically). In fact any number of
+%   cell arrays of two or four values may be used to run more than one test
+%   and average the results, e.g. two cell arrays might specify one test with
+%   a larger occluded area and stride rate first and a second test with a
+%   smaller occluded area and stride rate last.
 %
 
 % Copyright (C) 2016 Felix Grün.
