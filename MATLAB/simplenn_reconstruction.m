@@ -1,6 +1,6 @@
 function im_ = simplenn_reconstruction(net, im_, target, varargin)
 %SIMPLENN_RECONSTRUCTION. Generating a reconstruction of the given target.
-%   HEATMAP = SIMPLENN_RECONSTRUCTION(NET, IM_, TARGET)
+%   IM_ = SIMPLENN_RECONSTRUCTION(NET, IM_, TARGET)
 %   generates an input image which leads to activations equal to TARGET in the
 %   last layer of the network. The reconstruction can be controlled by optional
 %   regularizers.

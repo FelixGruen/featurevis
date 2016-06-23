@@ -13,6 +13,14 @@ function heatmap = graphical_occlusion(net, im, im_, varargin)
 %
 %   GRAPHICAL_OCCLUSION(...,'OPT',VALUE,..., {SIZE, STRIDE}) takes the following options:
 %
+%   'InputName':: Empty
+%      Sets the input variable. Only required for dag networks with more than
+%      one input variable.
+%
+%   'OutputName':: Empty
+%      Sets the output variable. Only required for dag networks with more than
+%      one output variable.
+%
 %   'MeasureLayer':: Last layer
 %       An Int32 specifying the layer at which the changes in activations
 %       should be measured. By default the last layer or, if the last layer

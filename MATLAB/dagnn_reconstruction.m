@@ -1,6 +1,6 @@
 function im_ = dagnn_reconstruction(net, im_, target, varargin)
 %DAGNN_RECONSTRUCTION. Generating a reconstruction of the given target.
-%   HEATMAP = DAGNN_RECONSTRUCTION(NET, IM_, TARGET)
+%   IM_ = DAGNN_RECONSTRUCTION(NET, IM_, TARGET)
 %   generates an input image which leads to activations equal to TARGET in the
 %   last layer of the network. The reconstruction can be controlled by optional
 %   regularizers.
