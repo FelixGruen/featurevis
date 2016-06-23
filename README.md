@@ -455,7 +455,6 @@ The value of the momentum. Set zero for no momentum.
 
 Computations are run on the GPU if IM_ is a gpuArray. Otherwise they are run on the CPU.
 
-
 ## License
 
 Simplified BSD License
