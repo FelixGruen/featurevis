@@ -49,7 +49,7 @@ Let's use the occlusion method. For this method we have to specify the side leng
 graphical_occlusion(net, im, im_, {32, 16});
 ```
 
-Maybe we want out occlusion box to have a specific color. Then we can specify it as RGB:
+Maybe we want our occlusion box to have a specific color. Then we can specify it as RGB:
 
 ```Matlab
 graphical_occlusion(net, im, im_, 'BoxColor', [128 64 -128], {32, 16});
@@ -57,7 +57,7 @@ graphical_occlusion(net, im, im_, 'BoxColor', [128 64 -128], {32, 16});
 
 Pay attention to the fact that these colors are used unmodified. So use the normalized image as basis for your color space.
 
-What if we want a rectangular occlusion box? Just replace the two values from above with four to specify the size and stride along the width and the size and stride along the height of the image, e.g. for a occlusion box 64 pixels wide and 32 pixels high use:
+What if we want a rectangular occlusion box? Just replace the two values from above with four to specify the size and stride along the width and the size and stride along the height of the image, so for a occlusion box 64 pixels wide and 32 pixels high use:
 
 ```Matlab
 graphical_occlusion(net, im, im_, {64, 16, 32, 16});
