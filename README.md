@@ -9,6 +9,8 @@
 
 ## 1. Quick Start Guide
 
+[[Content] (#content)] [Quick Start Guide] [[Functions] (#2-functions)] [[Citation] (#3-citation)] [[License] (#4-license)]
+
 Every function requires a network and an image. So let's load the network first. After you have loaded MatConvNet use the normal load function for networks of type simpleNN:
 
 ```Matlab
@@ -88,6 +90,8 @@ graphical_occlusion(net, im, im_, {64, 16, 64, 32});
 This concludes this short introduction. We hope you have fun experimenting with this library. The documentation for all methods can be found below or in the source code.
 
 ## 2. Functions
+
+[[Content] (#content)] [[Quick Start Guide] (#1-quick-start-guide)] [Functions] [[Citation] (#3-citation)] [[License] (#4-license)]
 
 #### graphical_deconvolution(net, im, im_)
 
@@ -464,6 +468,8 @@ Computations are run on the GPU if IM_ is a gpuArray. Otherwise they are run on 
 
 ## 3. Citation
 
+[[Content] (#content)] [[Quick Start Guide] (#1-quick-start-guide)] [[Functions] (#2-functions)] [Citation] [[License] (#4-license)]
+
 If you use this library, please cite
 
 ````Tex
@@ -477,6 +483,8 @@ If you use this library, please cite
 ````
 
 ## 4. License
+
+[[Content] (#content)] [[Quick Start Guide] (#1-quick-start-guide)] [[Functions] (#2-functions)] [[Citation] (#3-citation)] [License]
 
 Simplified BSD License
 
