@@ -1,6 +1,13 @@
 # The FeatureVis library
 
-## Quick Start Guide
+## Content
+
+1. [Quick Start Guide] (#1-quick-start-guide)
+2. [Functions] (#2-functions)
+3. [Citation] (#3-citation)
+4. [License] (#4-license)
+
+## 1. Quick Start Guide
 
 Every function requires a network and an image. So let's load the network first. After you have loaded MatConvNet use the normal load function for networks of type simpleNN:
 
@@ -80,7 +87,7 @@ graphical_occlusion(net, im, im_, {64, 16, 64, 32});
 
 This concludes this short introduction. We hope you have fun experimenting with this library. The documentation for all methods can be found below or in the source code.
 
-## Functions
+## 2. Functions
 
 #### graphical_deconvolution(net, im, im_)
 
@@ -455,7 +462,21 @@ The value of the momentum. Set zero for no momentum.
 
 Computations are run on the GPU if IM_ is a gpuArray. Otherwise they are run on the CPU.
 
-## License
+## 3. Citation
+
+If you use this library, please cite
+
+````Tex
+@inproceedings{gruen16featurevis,
+    author    = {Felix Gr{\"{u}}n, Christian Rupprecht, Nassir Navab, Federico Tombari},
+    title     = {A Taxonomy and Library for Visualizing Learned Features in Convolutional Neural Networks},
+    booktitle = {{ICML} Visualization for Deep Learning Workshop},
+    year      = {2016},
+    url       = {http://arxiv.org/abs/1606.07757}
+}
+````
+
+## 4. License
 
 Simplified BSD License
 
