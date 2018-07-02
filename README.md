@@ -1,11 +1,13 @@
+**The code for this project was developed during my master studies at TU Munich. I have graduated since then and unfortunately I currently don't have the time to provide support for this project. I will leave the documentation and code online, but please note that they are provided as is.**
+
 # The FeatureVis library
 
 ## Content
 
-1. [Quick Start Guide] (#1-quick-start-guide)
-2. [Functions] (#2-functions)
-3. [Citation] (#3-citation)
-4. [License] (#4-license)
+1. [Quick Start Guide](#1-quick-start-guide)
+2. [Functions](#2-functions)
+3. [Citation](#3-citation)
+4. [License](#4-license)
 
 ## 1. Quick Start Guide
 
