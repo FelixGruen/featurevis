@@ -1,4 +1,4 @@
-**The code for this project was developed during my master studies at TU Munich. I have graduated since then and unfortunately I currently don't have the time to provide support for this project. I will leave the documentation and code online, but please note that they are provided as is.**
+**The code for this project was developed during my bachelor's studies at TU Munich. I have graduated since then, and unfortunately don't have the time to provide active support for this project. I will leave the documentation and code available online, but please note that they are provided *as is*.**
 
 # The FeatureVis library
 
